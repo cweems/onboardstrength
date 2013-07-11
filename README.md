@@ -61,34 +61,30 @@ Note that while OBS data is available at [Peace Corps Open Data](http://www.peac
 ####Example Usage
 
 **Get CSV as JSON** (default behavior)  
-[CSV to JSON](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv
 
 **Get results as XML**  
-[CSV to XML](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml
 
 **Get results as JSONP**  
-[CSV to JSONP](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=json&callback=parse_results
 
-### Get results as HTML
-[CSV to HTML](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html)  
+**Get results as HTML**  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html
 
 
-### Sort by a field
-* [Sort by Post (HTML) (ascending)](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&sort=Post&sort_dir=asc)  
+##### Sort by a field
+ * Sort by Post (HTML) (ascending)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&sort=Post&sort_dir=asc
 
-* [Sort by Total Volunteers (HTML) (descending)](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&sort=Total%20Volunteers%20at%20Post&sort_dir=desc)  
+ * Sort by Total Volunteers (HTML) (descending)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&sort=Total%20Volunteers%20at%20Post&sort_dir=desc
 
-### Filter by a field
-* [Filter by Region - Africa (HTML)](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&Region=AF)  
+##### Filter by a field
+ * [Filter by Region - Africa (HTML)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&Region=AF
 
-* [Filter by Year - 2011 (HTML)](http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&Year=2011)  
+ * [Filter by Year - 2011 (HTML)  
 http://labs.data.gov/csv-to-api/?source=https://github.com/PeaceCorps/onboardstrength/raw/master/data/OBS_FY_9-12.csv&format=xml&format=html&Year=2011
 
 ###Usage
