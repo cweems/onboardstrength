@@ -1,71 +1,171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Onboardstrength by PeaceCorps</title>
+<head>
+	<title>Peace Corps Volunteers 2012</title>
+	<meta charset="utf-8" />
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>Onboardstrength</h1>
-        <p>The On-Board Strength API generates filtered views of the data from the official number of serving Volunteers and Trainees globally and in all sectors of Peace Corps work. Currently provides Fiscal Year 2009 - 2012 data.</p>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <p class="view"><a href="https://github.com/PeaceCorps/onboardstrength">View the Project on GitHub <small>PeaceCorps/onboardstrength</small></a></p>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
+
+	<style>
+		#map {
+			width: 1200px;
+			height: 600px;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+
+	<script type="text/javascript" src="pc_totals_2012.js"></script>
+	<script type="text/javascript">
+
+		var map = L.map('map').setView([30, 0], 2);
+
+		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
+			attribution: '',
+			key: 'BC9A493B41014CAABB98F0471D759707',
+			styleId: 22677
+		}).addTo(map);
 
 
-        <ul>
-          <li><a href="https://github.com/PeaceCorps/onboardstrength/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/PeaceCorps/onboardstrength/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/PeaceCorps/onboardstrength">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+		// control that shows state info on hover
+		var info = L.control();
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+		info.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info');
+			this.update();
+			return this._div;
+		};
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+		info.update = function (props) {
+			this._div.innerHTML = '<h4>Peace Corps Volunteers in 2012</h4>' +  (props ?
+				'<b>' + props.NAME + '</b><br />' + props.pc2012_total + ' Volunteers'
+				: 'Hover over a post');
+		};
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+		info.addTo(map);
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+		// get color depending on population density value
+		function getColor(d) {
+			return d > 400  ? '#BD0026' :
+			       d > 200  ? '#E31A1C' :
+			       d > 100  ? '#FC4E2A' :
+			       d > 50   ? '#FD8D3C' :
+			       d > 20   ? '#FEB24C' :
+			       d > 10   ? '#FED976' :
+			                  '#FFEDA0';
+		}
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+		function style(feature) {
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				dashArray: '3',
+				fillOpacity: 0.7,
+				fillColor: getColor(feature.properties.pc2012_total)
+			};
+		}
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+		function highlightFeature(e) {
+			var layer = e.target;
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+			layer.setStyle({
+				weight: 5,
+				color: '#666',
+				dashArray: '',
+				fillOpacity: 0.7
+			});
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+			info.update(layer.feature.properties);
+		}
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/PeaceCorps">PeaceCorps</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+		var geojson;
+
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
+			info.update();
+		}
+
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+		function onEachFeature(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});
+		}
+
+		geojson = L.geoJson(pc_data, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+
+		map.attributionControl.addAttribution('Volunteer data from <a href="http://www.peacecorps.gov/about/open/data/">Peace Corps Open Data</a>');
+
+
+		var legend = L.control({position: 'bottomright'});
+
+		legend.onAdd = function (map) {
+
+			var div = L.DomUtil.create('div', 'info legend'),
+				grades = [0, 10, 20, 50, 100, 200, 400],
+				labels = [],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
+			}
+
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+
+		legend.addTo(map);
+
+	</script>
+</body>
 </html>
